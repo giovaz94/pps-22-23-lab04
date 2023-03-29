@@ -9,27 +9,24 @@ trait SecondDegreePolynomial:
   def +(polynomial: SecondDegreePolynomial): SecondDegreePolynomial
   def -(polynomial: SecondDegreePolynomial): SecondDegreePolynomial
 
-
-case class SecondDegreePolynomialImpl(
-       override val secondDegree: Double,
-       override val firstDegree: Double,
-       override val constant: Double
-) extends SecondDegreePolynomial :
-
-  private def operation(polynomial: SecondDegreePolynomial)(op: (Double, Double) => Double): SecondDegreePolynomial =
-    val secondDegreeTerm = op(secondDegree, polynomial.secondDegree)
-    val firstDegreeTerm = op(firstDegree, polynomial.firstDegree)
-    val constantTerm = op(constant, polynomial.constant)
-    SecondDegreePolynomialImpl(secondDegreeTerm, firstDegreeTerm, constantTerm)
-
-  override def +(polynomial: SecondDegreePolynomial): SecondDegreePolynomial =
-    operation(polynomial)(_ + _)
-
-  override def -(polynomial: SecondDegreePolynomial): SecondDegreePolynomial =
-    operation(polynomial)(_ - _)
-
-
 object SecondDegreePolynomial:
+  case class SecondDegreePolynomialImpl(
+     override val secondDegree: Double,
+     override val firstDegree: Double,
+     override val constant: Double
+   ) extends SecondDegreePolynomial:
+    private def operation(polynomial: SecondDegreePolynomial)(op: (Double, Double) => Double): SecondDegreePolynomial =
+      val secondDegreeTerm = op(secondDegree, polynomial.secondDegree)
+      val firstDegreeTerm = op(firstDegree, polynomial.firstDegree)
+      val constantTerm = op(constant, polynomial.constant)
+      SecondDegreePolynomialImpl(secondDegreeTerm, firstDegreeTerm, constantTerm)
+
+    override def +(polynomial: SecondDegreePolynomial): SecondDegreePolynomial =
+      operation(polynomial)(_ + _)
+
+    override def -(polynomial: SecondDegreePolynomial): SecondDegreePolynomial =
+      operation(polynomial)(_ - _)
+
   def apply(secondDegree: Double, firstDegree: Double, constant: Double): SecondDegreePolynomial =
     SecondDegreePolynomialImpl(secondDegree, firstDegree, constant)
 
